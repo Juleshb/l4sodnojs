@@ -29,7 +29,15 @@ if (!name || !email || !password) {
   return res.status(201).json({message: 'User created'});
 
   });
-
+  app.put('/user/:id', async(req, res) => {
+    const {name, email, password} = req.body;
+    const {id} = req.params;
+    if (!name || !email || !password) {
+      return res.status(400).json({message: 'Bad Request'});
+    }
+    const [rows] = await db.query('UPDATE Users SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, password, id]);
+   return res.status(201).json({message: 'User updated'});
+ })
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
